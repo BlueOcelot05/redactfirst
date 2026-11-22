@@ -1,0 +1,23 @@
+{
+  "name": "redactfirst",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first PII redaction with Firebase AI Logic hybrid inference: personal data is masked on-device, only the redacted text reaches the cloud.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}

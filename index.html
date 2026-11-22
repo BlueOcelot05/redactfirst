@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>RedactFirst — mask personal data on-device, then ask the cloud</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <h1>RedactFirst</h1>
+        <p class="tagline">Personal data is masked on this device. The cloud only sees what is safe.</p>
+      </div>
+      <div class="status" aria-live="polite">
+        <span class="pill" id="device-pill">On-device model: checking…</span>
+        <button id="device-btn" class="ghost" hidden>Enable on-device model</button>
+        <span class="pill" id="cloud-pill">Cloud: checking…</span>
+      </div>
+    </header>
+
+    <p id="setup-note" class="note" hidden></p>
+
+    <main class="grid">
+      <section class="card">
+        <h2><span class="step">1</span> Paste the original text</h2>
+        <p class="hint">Stays in this tab. Nothing is sent anywhere at this step.</p>
+        <textarea id="input" rows="14" spellcheck="false" placeholder="Paste an email, a patient request, a contract clause…"></textarea>
+        <div class="row">
+          <button id="mask-btn" class="primary">Mask personal data</button>
+          <button id="mask-selection-btn" class="ghost" title="Select text above, then click">Mask selection</button>
+          <button id="sample-btn" class="ghost">Load sample</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="step">2</span> Review what will leave the device</h2>
+        <p class="hint" id="detect-info">Run step 1 to see the redacted text.</p>
+        <div id="preview" class="preview" aria-label="Redacted text"></div>
+        <p class="hint">Click a highlighted item to unmask it.</p>
+        <label id="confirm-wrap" class="confirm" hidden>
+          <input type="checkbox" id="confirm" />
+          The on-device model did not run, so only rule-based masking was applied. I have reviewed the text above.
+        </label>
+      </section>
+
+      <section class="card wide">
+        <h2><span class="step">3</span> Ask the model about the redacted text</h2>
+        <div class="row">
+          <button class="task" data-task="summary">Summarise</button>
+          <button class="task" data-task="reply">Draft a reply</button>
+          <button class="task" data-task="classify">Classify (DPO triage)</button>
+        </div>
+        <div class="row">
+          <input id="custom" type="text" maxlength="500" placeholder="…or write your own instruction" />
+          <button class="task" data-task="custom">Run</button>
+        </div>
+        <p id="task-error" class="error" role="alert" hidden></p>
+        <div class="results" id="results" hidden>
+          <div>
+            <h3>What the model returned <span class="pill" id="source-pill"></span></h3>
+            <pre id="raw-out"></pre>
+          </div>
+          <div>
+            <h3>Restored locally <span class="pill local">on this device</span></h3>
+            <pre id="restored-out"></pre>
+          </div>
+        </div>
+        <details id="payload-wrap" hidden>
+          <summary>Exact text that was sent to the model</summary>
+          <pre id="payload"></pre>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      Built with Firebase AI Logic hybrid inference · Stage 1: Gemini Nano, on-device only · Stage 2: cloud with on-device fallback
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
